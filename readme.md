@@ -49,6 +49,11 @@ run.sh: This bash script also runs the microservice (ctrl-c to exit) but does no
 
 Note: service.sh does not work on Microsoft Windows systems, therefore please use run.sh for Windows and Git Bash desktop application.
 
+### Configuration
+
+The period by which the Statistics gathering thread updates statistics can be configured. Amend parameter "app.updateperiodms" and change to desired value (in milliseconds).
+The configuration file (application.properties) is located under the root folder (where run.sh/service.sh are located)
+
 ### Testing
 
 - A suite of automated tests are provided (unit tests, integration tests, and application tests).
