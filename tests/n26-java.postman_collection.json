@@ -1,0 +1,54 @@
+{
+	"id": "ff837475-0519-8a67-aa7d-7312b3acdf61",
+	"name": "n26-java",
+	"description": "",
+	"order": [
+		"d57a92b0-dd2d-562b-76d2-8c72e5ccdd44",
+		"ae6bdd5e-a69f-1bd5-62b4-026533265dd6"
+	],
+	"folders": [],
+	"timestamp": 1493204944143,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "ae6bdd5e-a69f-1bd5-62b4-026533265dd6",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:8080/transactions",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1493211923806,
+			"name": "transactions",
+			"description": "",
+			"collectionId": "ff837475-0519-8a67-aa7d-7312b3acdf61",
+			"responses": [],
+			"rawModeData": "{\n\t\"amount\" : 12.3,\n\t\"timestamp\" : 1478192204000\n}"
+		},
+		{
+			"id": "d57a92b0-dd2d-562b-76d2-8c72e5ccdd44",
+			"headers": "",
+			"url": "http://localhost:8080/statistics",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "ff837475-0519-8a67-aa7d-7312b3acdf61",
+			"data": null,
+			"dataMode": "params",
+			"name": "statistics",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493205808624,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
