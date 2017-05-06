@@ -74,3 +74,19 @@ TransactionsService (etc) as I didn't feel it added value.
 
 - add more application, integration and unit testing to cover more cases, including corner cases
 - refactor and improve ruby scripts (or utilise an off-the-shelf framework) to automate black box testing
+
+## Update on Saturday 6th May (prior to receiving any feedback)
+
+- I added a JMeter test plan to the project under ./tests which starts 50 threads that hit both endpoints over a period of 2 minutes. For the timestamp, the test plan was manually edited to use the current
+unix time so that statistics are non-zero. Future updates to the JMeter test plan would dynamically set unix timestamp. A screenshot of the results are in the tests folder (png file).
+- The current implementation is inefficient. I only had around 4 hours to write the code so I had to roll with an inefficient solution so I could spend time on automated tests to demonstrate testing at the expense of
+an inefficient algorithm and code that can be refactored to reduce the class count and make the coder easier to read.
+- Some improvements I could make:
+    - The statistics gathering algorithm traverses the entire collection (the queue) every time it runs. This is inefficient and becomes more so as the collection increases in size. It would be better to have another thread
+     that processes queued incoming transactions and stores them in a timestamp sorted collection. This means that the statistics gatherer only has to traverse the first sixty seconds of the collection. This obviously has to 
+     be made threadsafe. The sort/add algorithm must also receive special attention when adding queued transactions.
+    - StatisticsGatherer and StatisticsRunner can be merged into one class (two are unnecessary). It would also be wise to name the thread which I don't currently do.    
+    - Consideration should be made to merge TransactionStatistics in model and StatisticsResponse in dto. I like to seperate dto from model but there's a lot of redundancy here (DRY: Don't Repeat Yourself)
+    - Consider using Spring TaskExecutor instead of a manual coded Thread/Runnable.
+    - Sort out synchronization blocks/keywords (currently, it's overkill)
+    - Seperate code to get statistics from the object that processes statistics. Because of JVM and Java's monitor, the current implementation is inefficient here because the request to get statistics will be delayed if statistics are being gathered.
