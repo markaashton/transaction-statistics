@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import priv.mashton.n26.statistics.StatisticsGatherer;
+import priv.mashton.n26.statistics.StatisticsRepository;
 import priv.mashton.n26.dtos.StatisticsResponse;
 import priv.mashton.n26.model.TransactionStatistics;
 
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class StatisticsServiceTest {
 
     @Mock
-    StatisticsGatherer gatherer;
+    StatisticsRepository gatherer;
 
     @InjectMocks
     StatisticsService service;

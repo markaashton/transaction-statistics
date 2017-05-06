@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.verify;
 
 
@@ -25,6 +26,9 @@ public class StatisticsRunnerTest {
 
     @Mock
     TransactionRepository transactionRepository;
+
+    @Mock
+    StatisticsRepository statisticsRepository;
 
     @InjectMocks
     StatisticsRunner statisticsRunner;
@@ -59,6 +63,17 @@ public class StatisticsRunnerTest {
             assertThat(tx.getTimestamp(), is(equalTo(timestamp)));
             assertThat(tx.getAmount(), is(equalTo(15.0)));
         }
+    }
+
+    @Test
+    public void cleanUpCallsStopOnTheRunner() {
+        //ARRANGE
+
+        //ACT
+        statisticsRunner.cleanup();
+
+        //ASSERT
+        assertFalse(statisticsRunner.t.isAlive());
     }
 
 }

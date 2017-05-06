@@ -2,7 +2,7 @@ package priv.mashton.n26.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import priv.mashton.n26.statistics.StatisticsGatherer;
+import priv.mashton.n26.statistics.StatisticsRepository;
 import priv.mashton.n26.dtos.StatisticsResponse;
 import priv.mashton.n26.model.TransactionStatistics;
 
@@ -10,10 +10,10 @@ import priv.mashton.n26.model.TransactionStatistics;
 public class StatisticsService {
 
     @Autowired
-    StatisticsGatherer gatherer;
+    StatisticsRepository statisticsRepository;
 
     public StatisticsResponse getTransactionStatistics() {
-        TransactionStatistics statistics = gatherer.getTransactionStatistics();
+        TransactionStatistics statistics = statisticsRepository.getTransactionStatistics();
 
         StatisticsResponse statisticsResponse = new StatisticsResponse();
 

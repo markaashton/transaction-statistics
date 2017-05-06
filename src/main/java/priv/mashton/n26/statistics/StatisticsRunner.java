@@ -9,21 +9,30 @@ import priv.mashton.n26.model.Transaction;
 import priv.mashton.n26.model.TransactionStatistics;
 import priv.mashton.n26.model.TransactionRepository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.function.Predicate;
 
 @Component
 class StatisticsRunner implements Runnable {
 
+    @Value("${app.updateperiodms ?: 1000}")
+    long updatePeriodMs;
+
     @Autowired
     TransactionRepository transactionRepository;
 
+    @Autowired
+    StatisticsRepository statisticsRepository;
+
     private boolean isRunning = false;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private TransactionStatistics transactionStatistics = new TransactionStatistics();
+    Thread t;
 
-    @Value("${app.updateperiodms ?: 1000}")
-    long updatePeriodMs;
+    public StatisticsRunner() {
+        t = new Thread(this, "statistics thread");
+    }
 
     @Override
     public void run() {
@@ -45,12 +54,6 @@ class StatisticsRunner implements Runnable {
         isRunning = false;
     }
 
-    public TransactionStatistics getTransactionStatistics() {
-        synchronized (this) {
-            return transactionStatistics.makeCopy();
-        }
-    }
-
     void updateStatistics() {
         long sixtySecondsEarlierMs = System.currentTimeMillis() - (60L * 1000L);
         Predicate<Transaction> lastSixtySecondsPred = p -> p.getTimestamp() >= sixtySecondsEarlierMs;
@@ -58,14 +61,19 @@ class StatisticsRunner implements Runnable {
 
         TransactionStatistics updatedStatistics = StatisticsUtils.calculateStatistics(filteredTransactions);
 
-        synchronized (this)
-        {
-            transactionStatistics.setAvg(updatedStatistics.getAvg());
-            transactionStatistics.setCount(updatedStatistics.getCount());
-            transactionStatistics.setMax(updatedStatistics.getMax());
-            transactionStatistics.setMin(updatedStatistics.getMin());
-            transactionStatistics.setSum(updatedStatistics.getSum());
-        }
+        statisticsRepository.setTransactionStatistics(updatedStatistics);
+    }
+
+    @PostConstruct
+    void initialise() throws Exception {
+        logger.info("statistics initialised");
+        t.start();
+    }
+
+    @PreDestroy
+    void cleanup() {
+        logger.info("statistics destroyed");
+        this.stop();
     }
 
 }
