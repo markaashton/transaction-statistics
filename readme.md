@@ -91,3 +91,4 @@ an inefficient algorithm and code that can be refactored to reduce the class cou
     - Sort out synchronization blocks/keywords (currently, it's overkill)
     - Seperate code to get statistics from the object that processes statistics. Because of JVM and Java's monitor, the current implementation is inefficient here because the request to get statistics will be delayed if statistics are being gathered.
     - Java's stream API has baked in aggregation operations (min, max, sum, average, etc) therefore it is unnecessary for me to calculate this manually. I could use the API instead.
+- There is now a feature branch (improvement1) that includes a minor improvement to the algorithm. Using jmeter, this resulted in a significant improvement.
